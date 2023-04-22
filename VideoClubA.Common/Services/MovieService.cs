@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
 using VideoClubA.Core.Entities;
 using VideoClubA.Core.Interfaces;
 using VideoClubA.Infrastucture.Data;
@@ -15,10 +16,9 @@ namespace VideoClubA.Common.Services
         }
         public List<Movie> GetAllMovies()
         {
-          return (from movies in _context.Movies
-                        select movies).ToList();
+            return (from movies in _context.Movies
+                    select movies).ToList();
         }
-
 
     }
 }

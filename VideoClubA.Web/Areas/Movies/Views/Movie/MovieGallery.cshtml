@@ -1,37 +1,83 @@
 ﻿@using VideoClubA.Web.Areas.Movies.Models;
-@model List<MovieWithAvailabilityViewModel>
+@model MoviesWithAvailabilityViewModel
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+        int currentPage = Model.CurrentPage;
+        int totalPages = Model.TotalPages;
 }
 
-<div class="container">
-    <div class="row">
-        <div class="col">
 
-            <table class="table table-hover">
-              <thead>
-                <tr class="table-success">
-                  <th scope="col">Tαινία</th>
-                  <th scope="col">Περιγραφή</th>
-                  <th scope="col">Κατηγορία</th>
-                  <th scope="col">Διαθεσιμότητα</th>
-                </tr>
-              </thead>
-              <tbody>
-                 @foreach (var movie in Model)
-                 {
-                         <tr class="table-primary">
-                          <th scope="row">@movie.Title</th>
-                          <td>@movie.Description</td>
-                          <td>@movie.Genre</td>
-                          <td>@movie.Availability</td>
-                        </tr>
-                  }
-              </tbody>
-            </table>
+<div class="container">
+    <a class="nav-link dropdown-toggle show m-5" data-bs-toggle="dropdown" href="#" role="button" 
+        aria-haspopup="true" aria-expanded="true" style="font-size: 1.5rem"><b>Κατηγορίες</b></a>
+    <div class="dropdown-menu show" data-bs-popper="static">
+        @foreach(var genre in Model.MovieGenres)
+        {
+          
+           <a class="dropdown-item" href="#">@genre</a>
+        }
+
+</div>
+
+<div class="container">
+
+    <div class="row height d-flex justify-content-center align-items-center">
+
+        <div class="col-md-6">
+
+        <div class="search">
+            <i class="fa fa-search"></i>
+            <input type="text" class="form-control" placeholder="Search" name="searchString" asp-for="searchString">
+              @* <a  href="@Url.Action("MovieGallery", new { searchString = searchString })/>*@
+           </button>                      
         </div>
+                      
     </div>
 </div>
+
+
+    <table class="table table-hover" style="font-size:1.5rem">
+        <thead>
+        <tr class="table-success">
+            <th scope="col">Tαινία</th>
+            <th scope="col">Περιγραφή</th>
+            <th scope="col">Κατηγορία</th>
+            <th scope="col">Διαθεσιμότητα</th>
+        </tr>
+        </thead>
+        <tbody>
+           
+            @foreach (var movie in Model.MoviesList)
+            {
+                    <tr class="table-light" id="movie-table">
+                    <th scope="row">@movie.Title</th>
+                    <td>@movie.Description</td>
+                    <td>@movie.Genre</td>
+                    <td>@movie.Availability</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-center">
+        <ul class="pagination pagination-lg">
+            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("MovieGallery", new { page = 1 })">&laquo;</a>
+            </li>
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="page-item @(currentPage == i ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("MovieGallery", new { page = i })">@i</a>
+                </li>
+            }
+            <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                <a class="page-link" href="@Url.Action("MovieGallery", new { page = totalPages })">&raquo;</a>
+            </li>
+        </ul>
+    </div>
+
+
 
 

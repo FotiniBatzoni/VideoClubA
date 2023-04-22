@@ -18,4 +18,5 @@ namespace VideoClubA.Core.Enumerations
         Επιστημονική_Φαντασία,
         Western
     }
+
 }

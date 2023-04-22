@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 using VideoClubA.Core.Entities;
 using VideoClubA.Core.Interfaces;
 using VideoClubA.Web.Areas.Movies.Models;
-using VideoClubA.Web.Profiler;
 
 namespace VideoClubA.Web.Areas.Movies.Controllers
 {
@@ -22,16 +23,9 @@ namespace VideoClubA.Web.Areas.Movies.Controllers
 
         [HttpGet]
         [Area("Movies")]
-        public ActionResult MovieGallery()
+        public ActionResult MovieGallery(int page = 1, int pageSize = 5, string searchString = "", string filter = "")
         {
-            List<Movie> movies = _movieDb.GetAllMovies();
-            Dictionary<string,int> availabilityPerMovie = GetAllAvailabilityPerMovie();
-
-
-            var viewModels = _mapper.Map<List<MovieWithAvailabilityViewModel>>(movies, opt => opt.Items["AvailabilityPerMovie"] = availabilityPerMovie);
-
-
-            return View(viewModels);
+            return View(PaginateMovies(page, pageSize, searchString, filter));
         }
 
         private Dictionary<string, int> GetAllAvailabilityPerMovie()
@@ -44,5 +38,53 @@ namespace VideoClubA.Web.Areas.Movies.Controllers
 
             return result;
         }
+
+        private MoviesWithAvailabilityViewModel PaginateMovies(int page, int pageSize, string searchString, string filter)
+        {
+
+            //Validate Page
+            page = Math.Clamp(page, 1, pageSize);
+
+            int startIndex = (int)((page - 1) * pageSize);
+
+            List<Movie> movies = _movieDb.GetAllMovies();
+
+            Dictionary<string, int> availabilityPerMovie = GetAllAvailabilityPerMovie();
+
+            int totalPages = (int)Math.Ceiling((double)movies.Count / pageSize);
+
+            var moviesList = _mapper.Map<List<MovieWithAvailabilityViewModel>>
+                (movies.OrderBy(m => m.Title), opt => opt.Items["AvailabilityPerMovie"] = availabilityPerMovie);
+
+            List<MovieWithAvailabilityViewModel> movieResults;
+
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                //Search
+                movieResults = moviesList.Where(s => s.Title.Contains(searchString)).ToList();
+            }
+            else if (!string.IsNullOrEmpty(filter))
+            {
+                //Filter
+                movieResults = moviesList.Where(s => s.Genre.Equals(filter)).ToList();
+            }
+            else
+            {
+                movieResults = moviesList;
+            }
+
+            movieResults = movieResults.Skip(startIndex).Take(pageSize).ToList();
+
+            var moviesViewModel = new MoviesWithAvailabilityViewModel(movieResults.ToList());
+
+
+            moviesViewModel.CurrentPage = page;
+            moviesViewModel.TotalPages = totalPages;
+
+            return moviesViewModel;
+        }
+
+
     }
 }

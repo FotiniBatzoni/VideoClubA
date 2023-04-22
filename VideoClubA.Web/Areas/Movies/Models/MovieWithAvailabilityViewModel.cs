@@ -22,6 +22,8 @@ namespace VideoClubA.Web.Areas.Movies.Models
         [Display(Name = "Διαθεσιμότητα")]
         public int Availability { get; set; }
 
+
+
         public MovieWithAvailabilityViewModel()
         {
             
@@ -41,6 +43,7 @@ namespace VideoClubA.Web.Areas.Movies.Models
             {
                 Availability = 0;
             }
+
         }
     }
 }
