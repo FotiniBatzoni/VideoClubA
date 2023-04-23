@@ -17,13 +17,18 @@ namespace VideoClubA.Web.Areas.Movies.Models
 
         public string? SearchString { get; set; }
 
-        public string? MovieGenre { get; set; }
+        public string? Filter { get; set; }
 
 
-        public MoviesWithAvailabilityViewModel(List<MovieWithAvailabilityViewModel> moviesList)
+        public MoviesWithAvailabilityViewModel(List<MovieWithAvailabilityViewModel> moviesList, int currentPage,
+                string searchString, string filter)
         {
             MoviesList = moviesList;
             MovieGenres = Enum.GetNames(typeof(MovieGenre)).ToList();
+            CurrentPage = currentPage;
+            SearchString = searchString;
+            Filter = filter;
+
         }
 
 

@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using VideoClubA.Core.Entities;
 using VideoClubA.Core.Interfaces;
 using VideoClubA.Web.Areas.Movies.Models;
@@ -28,6 +26,8 @@ namespace VideoClubA.Web.Areas.Movies.Controllers
             return View(PaginateMovies(page, pageSize, searchString, filter));
         }
 
+
+
         private Dictionary<string, int> GetAllAvailabilityPerMovie()
         {
             List<MovieCopy> availableMoviesCopies = _movieCopyDb.GetAllAvailabiliy();
@@ -39,7 +39,8 @@ namespace VideoClubA.Web.Areas.Movies.Controllers
             return result;
         }
 
-        private MoviesWithAvailabilityViewModel PaginateMovies(int page, int pageSize, string searchString, string filter)
+        private MoviesWithAvailabilityViewModel PaginateMovies(int page, int pageSize,
+             string searchString,  string filter)
         {
 
             //Validate Page
@@ -67,7 +68,7 @@ namespace VideoClubA.Web.Areas.Movies.Controllers
             else if (!string.IsNullOrEmpty(filter))
             {
                 //Filter
-                movieResults = moviesList.Where(s => s.Genre.Equals(filter)).ToList();
+                movieResults = moviesList.Where(s => s.Genre.ToString().Equals(filter)).ToList();
             }
             else
             {
@@ -76,11 +77,14 @@ namespace VideoClubA.Web.Areas.Movies.Controllers
 
             movieResults = movieResults.Skip(startIndex).Take(pageSize).ToList();
 
-            var moviesViewModel = new MoviesWithAvailabilityViewModel(movieResults.ToList());
+            var moviesViewModel = new MoviesWithAvailabilityViewModel(
+                movieResults.ToList(),page,searchString,filter);
 
 
             moviesViewModel.CurrentPage = page;
             moviesViewModel.TotalPages = totalPages;
+            moviesViewModel.SearchString = searchString;
+            moviesViewModel.Filter = filter;
 
             return moviesViewModel;
         }
