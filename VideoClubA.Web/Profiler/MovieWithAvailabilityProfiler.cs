@@ -9,7 +9,7 @@ namespace VideoClubA.Web.Profiler
     {
         public MovieWithAvailabilityProfiler()
         {
-            CreateMap<MovieCopy, MovieWithAvailabilityViewModel>();
+            //CreateMap<MovieCopy, MovieWithAvailabilityViewModel>();
             CreateMap<Movie, MovieWithAvailabilityViewModel>()
              .ForMember(dest => dest.Availability, opt => opt.MapFrom<MovieWithAvailabilityResolver>());
         }
