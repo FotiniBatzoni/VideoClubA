@@ -11,19 +11,34 @@ namespace VideoClubA.Web.Areas.Movies.Controllers
         private readonly IMapper _mapper;
         private readonly IMovieService _movieDb;
         private readonly IMovieCopyService _movieCopyDb;
+        private readonly ILogger _logger;
 
-        public MovieController(IMapper mapper, IMovieService movieDb, IMovieCopyService movieCopyDb)
+        public MovieController(IMapper mapper, IMovieService movieDb, IMovieCopyService movieCopyDb,
+            ILogger<MovieController> logger)
         {
             _mapper = mapper;
             _movieDb = movieDb;
             _movieCopyDb = movieCopyDb;
+            _logger = logger;
         }
 
         [HttpGet]
         [Area("Movies")]
         public ActionResult MovieGallery(int page = 1, int pageSize = 5, string searchString = "", string filter = "")
         {
-            return View(PaginateMovies(page, pageSize, searchString, filter));
+            try
+            {
+                int a = 5;
+                int b = 0 / a;
+                return View(PaginateMovies(page, pageSize, searchString, filter));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return View();
+            }
+
+
         }
 
 

@@ -1,12 +1,37 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Formatting.Compact;
 using VideoClubA.Common.Services;
 using VideoClubA.Core.Interfaces;
 using VideoClubA.Infrastucture.Data;
 using VideoClubA.Web.Profiler;
 
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
+    .Enrich.WithThreadId()
+    .Enrich.WithProcessId() 
+    .Enrich.WithEnvironmentName()
+    .WriteTo.Console(new CompactJsonFormatter())
+    .WriteTo.File(new CompactJsonFormatter(),"./Log/log.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+Log.Logger.Information("Logging is working");
+
 var builder = WebApplication.CreateBuilder(args);
 
+////
+//var logger = new LoggerConfiguration()
+//  .ReadFrom.Configuration(builder.Configuration)
+//  .Enrich.FromLogContext()
+//  .CreateLogger();
+
+//builder.Logging.ClearProviders();
+//builder.Logging.AddSerilog(logger);
+
+builder.Host.UseSerilog();
 
 //Automapper
 builder.Services.AddAutoMapper(typeof(MovieWithAvailabilityProfiler));
