@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using VideoClubA.Core.Entities;
 using VideoClubA.Web.Areas.Movies.Models;
+using VideoClubA.Web.Profiler;
 
 namespace VideoClubA.Web.Profiler
 {

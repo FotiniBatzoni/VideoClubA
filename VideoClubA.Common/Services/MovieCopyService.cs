@@ -14,9 +14,9 @@ namespace VideoClubA.Common.Services
         }
         public List<MovieCopy> GetAllAvailabiliy()
         {
-            return (from moviecopies in _context.MovieCopies
-                    where moviecopies.IsAvailable == true
-                    select moviecopies).ToList();
+            return _context.MovieCopies
+                        .Where(moviecopies => moviecopies.IsAvailable == true)
+                        .ToList();
         }
     }
 }

@@ -26,22 +26,10 @@ namespace VideoClubA.Web.Areas.Movies.Controllers
         [Area("Movies")]
         public ActionResult MovieGallery(int page = 1, int pageSize = 5, string searchString = "", string filter = "")
         {
-            try
-            {
-                int a = 5;
-                int b = 0 / a;
-                return View(PaginateMovies(page, pageSize, searchString, filter));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return View();
-            }
-
-
+    
+           return View(PaginateMovies(page, pageSize, searchString, filter));
+         
         }
-
-
 
         private Dictionary<string, int> GetAllAvailabilityPerMovie()
         {

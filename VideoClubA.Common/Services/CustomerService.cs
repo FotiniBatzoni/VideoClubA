@@ -6,20 +6,20 @@ using VideoClubA.Infrastucture.Data;
 
 namespace VideoClubA.Common.Services
 {
-    public class MovieService : IMovieService
+    public class CustomerService : ICustomerSevice
     {
         private readonly VideoClubDbContext _context;
 
-        public MovieService(VideoClubDbContext context)
+        public CustomerService(VideoClubDbContext context)
         {
             _context = context;
         }
-        public List<Movie> GetAllMovies()
+        public List<Customer> GetAllCustomers()
         {
-            return _context.Movies
-                .AsNoTracking()
-                .ToList();
+            return  _context.Customers
+                    .AsNoTracking()
+                    .ToList();
         }
-
     }
+   
 }
