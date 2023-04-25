@@ -7,32 +7,37 @@
     int currentPage = Model.CurrentPage;
     int totalPages = Model.TotalPages;
 }
+<h1 >Πελάτες</h1>
 
-<div>
-
-</div>
     <table class="table table-hover" style="font-size:1.5rem">
         <thead>
         <tr class="table-success">
             <th scope="col">Όνομα</th>
             <th scope="col">Επώνυμο</th>
             <th scope="col">Ενεργές Κρατήσεις</th>
+            <th scope="col">Όλες οι Κρατήσεις</th>
         </tr>
         </thead>
         <tbody>
-           
             @foreach (var customer in Model.CustomerList)
             {
-                    <tr class="table-light" id="movie-table">
+                 <tr class="table-light" id="movie-table">
                     <th scope="row">@customer.FirstName</th>
                     <td>@customer.LastName</td>
                     <td>@customer.ActiveReservations</td>
+                    <td>
+                        <form action="@Url.Action("ReservationsPerCustomer", "Reservation", new { area = "Reservations" })" method="get" >
+                                <input type="hidden" name="customerId" value="@customer.CustomerId" />
+                                <input type="hidden" name="firstName" value="@customer.FirstName" />
+                                <input type="hidden" name="lastName" value="@customer.LastName" />
+                            <button type="submit"  class="" asp-area="Reservations" asp-controller="Reservation"
+                             asp-action="ReservationsPerCustomer" >Κρατήσεις Πελάτη</button>
+                         </form>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
-    
- 
 
         <nav>
         <ul class="pagination d-flex justify-content-center">

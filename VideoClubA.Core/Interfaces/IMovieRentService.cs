@@ -10,5 +10,7 @@ namespace VideoClubA.Core.Interfaces
     public interface IMovieRentService
     {
         public List<MovieRent> GetMovieRents();
+
+        public List<MovieRent> GetRentsPerCustomer(string customerId);
     }
 }

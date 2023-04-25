@@ -37,4 +37,11 @@
     <ProjectReference Include="..\VideoClubA.Infrastucture\VideoClubA.Infrastucture.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\ActiveReservations\Controllers\" />
+    <Folder Include="Areas\ActiveReservations\Data\" />
+    <Folder Include="Areas\ActiveReservations\Models\" />
+    <Folder Include="Areas\ActiveReservations\Views\" />
+  </ItemGroup>
+
 </Project>

@@ -22,6 +22,26 @@ namespace VideoClubA.Common.Services
                 .ToList();
 
         }
+
+        public List<MovieRent> GetRentsPerCustomer(string customerId)
+        {
+            List<MovieRent> movieRents = GetMovieRents();
+
+            var rents = movieRents
+                .Where(m => m.CustomerId.Contains(customerId))
+                    .Select(m => new MovieRent
+                    {
+                        CustomerId = m.Id,
+                        MovieTitle = m.MovieTitle,
+                        RentDate = m.RentDate,
+                        ReturnDate = m.ReturnDate,
+                        Comment = m.Comment
+                    })
+                    .ToList();
+
+            return rents;
+        }
+
     }
 }
 

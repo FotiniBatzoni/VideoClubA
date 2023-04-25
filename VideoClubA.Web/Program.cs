@@ -1,11 +1,9 @@
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Formatting.Compact;
 using VideoClubA.Common.Services;
 using VideoClubA.Core.Interfaces;
 using VideoClubA.Infrastucture.Data;
-using VideoClubA.Web.Areas.Movies.Models;
 using VideoClubA.Web.Profiler;
 
 Log.Logger = new LoggerConfiguration()
