@@ -39,7 +39,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\ActiveReservations\Controllers\" />
-    <Folder Include="Areas\ActiveReservations\Views\" />
+    <Folder Include="Areas\ActiveReservations\Views\NewFolder\" />
   </ItemGroup>
 
 </Project>
