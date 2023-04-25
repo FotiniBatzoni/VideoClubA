@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace VideoClubA.Web.Areas.ActiveReservations.Models
 {
-    public class ActiveReservation
+    public class ActiveReservationViewModel
     {
         [Display(Name = "Τίτλος Ταινίας")]
         public string MovieTitle { get; set; }
@@ -23,12 +23,12 @@ namespace VideoClubA.Web.Areas.ActiveReservations.Models
         [Display(Name = "Επίθετο")]
         public string LastName { get; set; }
 
-        public ActiveReservation()
+        public ActiveReservationViewModel()
         {
             
         }
 
-        public ActiveReservation(string movieTitle, DateTime returnDate, string comment,
+        public ActiveReservationViewModel(string movieTitle, DateTime returnDate, string comment,
             string movieCopyid, string firstName, string lastName)
         {
             MovieTitle = movieTitle;
@@ -43,14 +43,3 @@ namespace VideoClubA.Web.Areas.ActiveReservations.Models
 
     
 }
-//var query = _context.MovieRents
-//    .Where(mr => !mr.MovieCopy.IsAvailable && mr.ReturnDate > DateTime.Now)
-//    .Select(mr => new
-//    {
-//        mr.MovieTitle,
-//        mr.ReturnDate,
-//        mr.Comment,
-//        CopyId = mr.MovieCopy.Id,
-//        FirstName = mr.Customer.FirstName,
-//        LastName = mr.Customer.LastName
-//    })

@@ -18,5 +18,12 @@ namespace VideoClubA.Common.Services
                         .Where(moviecopies => moviecopies.IsAvailable == true)
                         .ToList();
         }
+
+        public List<MovieCopy> GetAllUnAvailable()
+        {
+            return _context.MovieCopies
+            .Where(moviecopies => moviecopies.IsAvailable == false)
+            .ToList();
+        }
     }
 }

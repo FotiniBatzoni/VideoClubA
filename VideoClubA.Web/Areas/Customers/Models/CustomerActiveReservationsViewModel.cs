@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Xml.Linq;
+using VideoClubA.Core.Entities;
 
 namespace VideoClubA.Web.Areas.Customers.Models
 {
