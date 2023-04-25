@@ -27,7 +27,6 @@ builder.Host.UseSerilog();
 
 //Automapper
 builder.Services.AddAutoMapper(typeof(MovieWithAvailabilityProfiler));
-builder.Services.AddAutoMapper(typeof(CustomerWithActiveReservationsProfiler));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Drawing.Printing;
-using VideoClubA.Core.Entities;
-using VideoClubA.Core.Enumerations;
 using VideoClubA.Core.Interfaces;
 using VideoClubA.Web.Areas.Customers.Models;
 using VideoClubA.Web.Areas.Movies.Controllers;
@@ -30,28 +29,34 @@ namespace VideoClubA.Web.Areas.Customers.Controllers
 
         [HttpGet]
         [Area("Customers")]
-        public IActionResult CustomerPanel()
+        public ActionResult CustomerPanel(int page = 1, int pageSize = 5)
         {
-            List<Customer> customers = _customerDb.GetAllCustomers();
-
-            Dictionary<string, int> availabilityPerMovie = GetActiveReservationsPerCustomer();
-
-            var custumersWithActiveReservations = _mapper.Map<List<CustomerActiveReservationsViewModel>>
-                (customers, opt => opt.Items["ActiveReservations"] = availabilityPerMovie);
-
-
-            return View(custumersWithActiveReservations);
+            return View(PaginateCustomer(page, pageSize));
         }
 
-        private Dictionary<string, int> GetActiveReservationsPerCustomer()
+        private CustomersWithActiveReservationViewModel PaginateCustomer(int page, int pageSize)
         {
-            List<MovieRent> movieRents = _movieRentDb.GetMovieRents();
 
-            var activeReservationsByCustomer = movieRents
-                .GroupBy(mr => mr.CustomerId)
-                .ToDictionary(g => g.Key, g => g.Count());
+            //Validate Page
+            page = Math.Clamp(page, 1, pageSize);
 
-            return activeReservationsByCustomer;
+            int startIndex = (int)((page - 1) * pageSize);
+
+            var customersWithActiveReservations = new CustomersWithActiveReservationViewModel(_customerDb, _movieRentDb).Get();
+
+            int totalPages = (int)Math.Ceiling((double)customersWithActiveReservations.Count / pageSize);
+            
+            customersWithActiveReservations = customersWithActiveReservations.Skip(startIndex).Take(pageSize).ToList();
+
+
+            var customersViewModel = new CustomersWithActiveReservationViewModel(
+                customersWithActiveReservations, page);
+
+
+            customersViewModel.CurrentPage = page;
+            customersViewModel.TotalPages = totalPages;
+
+            return customersViewModel;
         }
 
     }
