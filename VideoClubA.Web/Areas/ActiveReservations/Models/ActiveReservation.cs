@@ -20,8 +20,28 @@ namespace VideoClubA.Web.Areas.ActiveReservations.Models
         [Display(Name = "Όνομα")]
         public string FirstName { get; set; }
 
+        [Display(Name = "Επίθετο")]
         public string LastName { get; set; }
+
+        public ActiveReservation()
+        {
+            
+        }
+
+        public ActiveReservation(string movieTitle, DateTime returnDate, string comment,
+            string movieCopyid, string firstName, string lastName)
+        {
+            MovieTitle = movieTitle;
+            ReturnDate = returnDate;
+            Comment = comment;
+            MovieCopyId = movieCopyid;
+            FirstName = firstName;
+            LastName = lastName;
+
+        }
     }
+
+    
 }
 //var query = _context.MovieRents
 //    .Where(mr => !mr.MovieCopy.IsAvailable && mr.ReturnDate > DateTime.Now)
