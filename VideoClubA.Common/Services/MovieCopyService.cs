@@ -1,4 +1,5 @@
-﻿using VideoClubA.Core.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using VideoClubA.Core.Entities;
 using VideoClubA.Core.Interfaces;
 using VideoClubA.Infrastucture.Data;
 
@@ -16,6 +17,7 @@ namespace VideoClubA.Common.Services
         {
             return _context.MovieCopies
                         .Where(moviecopies => moviecopies.IsAvailable == true)
+                        .AsNoTracking()
                         .ToList();
         }
 
@@ -23,6 +25,7 @@ namespace VideoClubA.Common.Services
         {
             return _context.MovieCopies
             .Where(moviecopies => moviecopies.IsAvailable == false)
+            .AsNoTracking()
             .ToList();
         }
     }

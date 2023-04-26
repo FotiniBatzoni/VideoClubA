@@ -1,5 +1,6 @@
 ﻿using VideoClubA.Core.Entities;
 using VideoClubA.Core.Interfaces;
+using VideoClubA.Web.Areas.ActiveReservations.Models;
 using VideoClubA.Web.Areas.Customers.Models;
 
 namespace VideoClubA.Web.Areas.ActiveReservations.Models
@@ -25,31 +26,42 @@ namespace VideoClubA.Web.Areas.ActiveReservations.Models
             List<MovieCopy> movieCopies = _movieCopyDb.GetAllUnAvailable();
 
             var activeReservations = movieRents
-                .Where(mr => !mr.MovieCopy.IsAvailable && mr.ReturnDate > DateTime.Now)
-               .Select(mr => new ActiveReservationViewModel
-               {
-                   MovieTitle = mr.MovieTitle,
-                   ReturnDate = mr.ReturnDate,
-                   Comment = mr.Comment,
-                   MovieCopyId = mr.MovieCopy.Id,
-                   FirstName = mr.Customer.FirstName,
-                   LastName = mr.Customer.LastName
-               }).ToList();
+            .Join(customers,
+                mr => mr.CustomerId,
+                c => c.Id,
+                (mr, c) => new { MovieRent = mr, Customer = c })
+            .Join(movieCopies,
+                x => x.MovieRent.MovieCopyId,
+                mc => mc.Id,
+                (x, mc) => new ActiveReservationViewModel
+                {
+                    MovieTitle = x.MovieRent.MovieTitle,
+                    MovieCopyId = x.MovieRent.MovieCopyId,
+                    FirstName = x.Customer.FirstName,
+                    LastName = x.Customer.LastName,
+                    ReturnDate = x.MovieRent.ReturnDate,
+                    Comment = x.MovieRent.Comment
+                })
+            .ToList();
 
-                return activeReservations;
+
+            Console.WriteLine( activeReservations);
+
+            return activeReservations;
         }
     }
 }
 
 
-//var query = _context.MovieRents
-//    .Where(mr => !mr.MovieCopy.IsAvailable && mr.ReturnDate > DateTime.Now)
-//    .Select(mr => new
-//    {
-//        mr.MovieTitle,
-//        mr.ReturnDate,
-//        mr.Comment,
-//        CopyId = mr.MovieCopy.Id,
-//        FirstName = mr.Customer.FirstName,
-//        LastName = mr.Customer.LastName
-//    })
+//movieRents
+//                .Where(mr => !mr.MovieCopy.IsAvailable && mr.ReturnDate > DateTime.Now)
+//               .Where(mr => mr.MovieCopyId != null)
+//               .Select(mr => new ActiveReservationViewModel
+//               {
+//                   MovieTitle = mr.MovieTitle,
+//                   ReturnDate = mr.ReturnDate,
+//                   Comment = mr.Comment,
+//                   MovieCopyId = mr.MovieCopy.Id,
+//                   FirstName = mr.Customer.FirstName,
+//                   LastName = mr.Customer.LastName
+//               }).ToList();

@@ -26,6 +26,16 @@ namespace VideoClubA.Web.Areas.Reservations.Controllers
             return View(PaginateRents(page, pageSize,customerId, firstName,lastName));
         }
 
+        [HttpPost]
+        [Area("Reservations")]
+        public IActionResult Create(string customerId)
+        {
+            return View();
+        }
+
+
+
+
         private RentsPerCustomerViewModel PaginateRents(int page, int pageSize, string customerId, string firstName, string lastName)
         {
             page = Math.Clamp(page, 1, pageSize);
