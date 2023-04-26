@@ -7,5 +7,6 @@ namespace VideoClubA.Core.Interfaces
     {
         public List<Movie> GetAllMovies();
 
+
     }
 }

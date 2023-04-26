@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using VideoClubA.Core.Entities;
 using VideoClubA.Core.Interfaces;
 using VideoClubA.Web.Areas.ActiveReservations.Models;
 
@@ -10,20 +12,24 @@ namespace VideoClubA.Web.Areas.ActiveReservations.Controllers
         private readonly IMovieRentService _movieRentDb;
         private readonly ICustomerSevice _customerDb;
         private readonly IMovieCopyService _movieCopyDb;
+        private readonly IMapper _mapper;
 
-        public ActiveReservationController(IMovieRentService movieRentDb, 
-            ICustomerSevice customerDb, IMovieCopyService movieCopyDb)
+        public ActiveReservationController(IMovieRentService movieRentDb,
+            ICustomerSevice customerDb, IMovieCopyService movieCopyDb,
+            IMapper mapper)
         {
             _movieRentDb = movieRentDb;
             _customerDb = customerDb;
             _movieCopyDb = movieCopyDb;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [Area("ActiveReservations")]
         public IActionResult ActiveReservationsPanel(int page = 1, int pageSize = 5)
         {
-            return View(PaginateReservations(page,pageSize));
+
+            return View(PaginateReservations(page, pageSize));
         }
 
         private ActiveReservationsViewModel PaginateReservations(int page, int pageSize)
@@ -34,9 +40,10 @@ namespace VideoClubA.Web.Areas.ActiveReservations.Controllers
 
             int startIndex = (int)((page - 1) * pageSize);
 
-            var activeReservations = new MovieCustomerMovieCopy(_movieRentDb, _customerDb, _movieCopyDb).Get();
+            List<MovieRent> allReservations = _movieRentDb.GetMovieRents();
 
-
+            var activeReservations = _mapper.Map<List<ActiveReservationViewModel>>
+                (allReservations);
 
             int totalPages = (int)Math.Ceiling((double)activeReservations.Count / pageSize);
 
@@ -51,6 +58,7 @@ namespace VideoClubA.Web.Areas.ActiveReservations.Controllers
             reservationsViewModel.TotalPages = totalPages;
 
             return reservationsViewModel;
+
         }
     }
 }

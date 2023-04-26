@@ -7,7 +7,7 @@ namespace VideoClubA.Common.Services
 {
     public class MovieRentService : IMovieRentService
     {
-        private readonly VideoClubDbContext _context;
+        private  VideoClubDbContext _context;
 
         public MovieRentService(VideoClubDbContext context)
         {
@@ -16,9 +16,12 @@ namespace VideoClubA.Common.Services
 
         public List<MovieRent> GetMovieRents()
         {
-            return _context.MovieRents.
-                Where(mr => mr.ReturnDate > DateTime.Now)
-                .AsNoTracking()
+            return _context.MovieRents
+                .Include(m => m.Customer)
+                .Include(m => m.Movie)
+                .Include(m => m.MovieCopy)
+                .Where(mr => mr.ReturnDate > DateTime.Now)
+                //.AsNoTracking()
                 .ToList();
 
         }
@@ -42,6 +45,11 @@ namespace VideoClubA.Common.Services
             return rents;
         }
 
+        public void CreateReservation(MovieRent movieRent)
+        {
+            _context.MovieRents.Add(movieRent);
+            _context.SaveChanges();
+        }
     }
 }
 

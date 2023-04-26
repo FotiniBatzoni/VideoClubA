@@ -8,6 +8,7 @@ namespace VideoClubA.Infrastucture.Data
         public VideoClubDbContext(DbContextOptions<VideoClubDbContext> options)
         : base(options)
         {
+            this.ChangeTracker.LazyLoadingEnabled = false;
         }
 
         // Add DbSet properties here for each entity

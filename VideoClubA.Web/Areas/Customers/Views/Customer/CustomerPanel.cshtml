@@ -36,12 +36,12 @@
                          </form>
                     </td>
                     <td>
-                        <form action="@Url.Action("Create", "Reservation", new { area = "Reservations" })" method="post" >
+                        <form action="@Url.Action("DisplayReservationForm", "Reservation", new { area = "Reservations" })" method="get" >
                                 <input type="hidden" name="customerId" value="@customer.CustomerId" />
                                  <input type="hidden" name="firstName" value="@customer.FirstName" />
                                 <input type="hidden" name="lastName" value="@customer.LastName" />
                             <button type="submit"  class="" asp-area="Reservations" asp-controller="Reservation"
-                             asp-action="Create" >Νέα Κράτηση</button>
+                             asp-action="DisplayReservationForm" >Νέα Κράτηση</button>
                          </form>
                     </td>
                 </tr>

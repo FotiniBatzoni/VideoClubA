@@ -39,7 +39,6 @@ namespace VideoClubA.Web.Areas.Customers.Controllers
             var customersWithActiveReservations = new MovieRentCustomer(_customerDb, _movieRentDb).Get();
 
 
-
             int totalPages = (int)Math.Ceiling((double)customersWithActiveReservations.Count / pageSize);
             
             customersWithActiveReservations = customersWithActiveReservations.Skip(startIndex).Take(pageSize).ToList();

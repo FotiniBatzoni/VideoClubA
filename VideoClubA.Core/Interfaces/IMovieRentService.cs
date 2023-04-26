@@ -12,5 +12,8 @@ namespace VideoClubA.Core.Interfaces
         public List<MovieRent> GetMovieRents();
 
         public List<MovieRent> GetRentsPerCustomer(string customerId);
+
+        public void CreateReservation(MovieRent movieRent);
+
     }
 }
