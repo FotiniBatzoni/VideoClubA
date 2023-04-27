@@ -13,5 +13,7 @@ namespace VideoClubA.Core.Interfaces
         public List<MovieCopy> GetAvailableCopies(string movieId);
 
         public List<MovieCopy> GetAllMovieCopies();
+
+        public MovieCopy GetMovieCopy(string movieCopyId);
     }
 }

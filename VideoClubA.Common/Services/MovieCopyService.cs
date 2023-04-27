@@ -42,5 +42,12 @@ namespace VideoClubA.Common.Services
                 .Where(m => m.MovieId.Contains(movieId) && m.IsAvailable == true)
                 .ToList();
         }
+
+        public MovieCopy GetMovieCopy(string movieCopyId)
+        {
+            return _context.MovieCopies
+                .Where(m => m.Id.Contains(movieCopyId))
+                .FirstOrDefault(); ;
+        }
     }
 }

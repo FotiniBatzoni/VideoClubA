@@ -70,20 +70,10 @@ namespace VideoClubA.Web.Areas.Reservations.Controllers
         [Area("Reservations")]
         public ActionResult CreateReservation(CreateReservationBindingModel reservation)
         {
-            reservation.CustomerId = Request.Form["CustomerId"];
-            reservation.Comment = Request.Form["Comment"];
-            var selectedMovie = Request.Form["SelectedMovie"].ToString();
-            var selectedMovieParts = selectedMovie.Split(",");
-            reservation.MovieId = selectedMovieParts[0];
-            reservation.MovieTitle = selectedMovieParts[1];
-
-              CreateReservation(reservation.MovieId, reservation.MovieTitle,
-            reservation.CustomerId, reservation.Comment);
+            SaveReservation( reservation);
 
             return RedirectToAction("CustomerPanel", "Customer", new { area = "Customers" });
         }
-
-
 
 
         private RentsPerCustomerViewModel PaginateRents(int page, int pageSize, string customerId, string firstName, string lastName)
@@ -106,22 +96,41 @@ namespace VideoClubA.Web.Areas.Reservations.Controllers
             return rentsViewModel;
         }
 
-        private void CreateReservation(string movieId, string movieTitle, string customerId, string comment)
+        private void SaveReservation(CreateReservationBindingModel reservation)
         {
+            var selectedMovie = Request.Form["SelectedMovie"].ToString();
+            var selectedMovieParts = selectedMovie.Split(",");
+            reservation.MovieId = selectedMovieParts[0];
+            reservation.MovieTitle = selectedMovieParts[1];
+
             DateTime today = DateTime.Now;
 
-            List<MovieCopy> availableCopies = _movieCopiesDb.GetAvailableCopies(movieId);
+            List<MovieCopy> availableCopies = _movieCopiesDb.GetAvailableCopies(reservation.MovieId);
+
+            var movieCopy = _movieCopiesDb.GetMovieCopy(reservation.MovieCopyId);
+
+            if (movieCopy != null )
+            {
+                if (movieCopy.IsAvailable)
+                {
+                    Console.WriteLine("The movie copy is not available");
+                    return ;
+                }
+                
+            }
+            movieCopy.IsAvailable = false;
 
             MovieRent movieRent = new MovieRent()
             {
-                MovieTitle = movieTitle,
-                //MovieCopyId
-                CustomerId = customerId,
+                MovieTitle = reservation.MovieTitle,
+                MovieCopyId = reservation.MovieCopyId,
+                CustomerId = reservation.CustomerId,
                 RentDate = today,
                 ReturnDate = today.AddDays(7),
-                Comment = comment,
+                Comment = reservation.Comment,
             };
 
+            _rentsDb.CreateReservation(movieRent);
 
         }
     }
